@@ -8,16 +8,15 @@ import (
 )
 
 func InitDB() (*sql.DB, error) {
-    connStr := "postgres://user:password@localhost:5432/users_db?sslmode=disable"
+    connStr := "postgres://user:password@db:5432/users_db?sslmode=disable" // Изменено localhost на db
     var db *sql.DB
     var err error
 
-    // Повторные попытки подключения
-    for i := 0; i < 10; i++ { // Пробуем 10 раз
+    for i := 0; i < 10; i++ {
         db, err = sql.Open("postgres", connStr)
         if err != nil {
             log.Printf("Failed to open DB: %v", err)
-            time.Sleep(2 * time.Second) // Ждем 2 секунды перед повторной попыткой
+            time.Sleep(2 * time.Second)
             continue
         }
 
@@ -31,5 +30,5 @@ func InitDB() (*sql.DB, error) {
         time.Sleep(2 * time.Second)
     }
 
-    return nil, err // Если после 10 попыток не удалось, возвращаем ошибку
+    return nil, err
 }
